@@ -1,111 +1,75 @@
-\# A1 — Build and Run (Docker, Nginx)
+# A1 — Build and Run (Docker, Nginx)
 
+## Description
+This task demonstrates building and running a simple static web application
+served by nginx using Docker and Docker Compose.
 
+The container serves a minimal index.html page with a custom message.
 
-\## Goal
+## Project structure
 
-Build and run a simple web app (static page served by nginx) using Docker. Provide an equivalent docker-compose setup.
+A1/test-project  
+├── Dockerfile  
+├── index.html  
+└── docker-compose.yml  
 
+## Requirements
+- Docker Engine
+- Docker Compose v2 (docker compose)
 
+## Run with Docker CLI
 
-\## Project location
+From the A1/test-project directory:
 
-`A1/test-project`
+sudo docker build -t my-web-app:latest .  
+sudo docker run -d --name my-web-app-container -p 8080:80 my-web-app:latest  
 
+Check that the service is running:
 
+curl http://127.0.0.1:8080  
 
-\## Requirements
+Stop and remove the container:
 
-\- Docker Engine
+sudo docker rm -f my-web-app-container  
 
-\- Docker Compose v2 (plugin): `1.29.2`
+## Run with Docker Compose
 
+From the A1/test-project directory:
 
+sudo docker compose up -d  
 
-\## Files
+Check that the service is running:
 
-\- `Dockerfile` — image based on `nginx:alpine`, copies `index.html` to nginx web root
+curl http://127.0.0.1:8080  
 
-\- `index.html` — simple page: "Hello from ShiroYama"
+Stop the service:
 
-\- `docker-compose.yml` — runs the same service with port mapping 8080:80
+sudo docker compose down  
 
+## Notes (VM environment)
 
+Docker is running inside a virtual machine (VMware NAT).
 
----
+The service is available from the host machine at:
 
+http://<VM_IP>:8080  
 
+To get the VM IP address:
 
-\## Run with Docker CLI
+hostname -I  
 
+## Question: How to deliver index.html without rebuilding the image?
 
+The index.html file can be delivered using a bind mount (volume) at runtime.
+This allows changing the file without rebuilding the Docker image.
 
-From `A1/test-project`:
+Example using Docker CLI:
 
+docker run -d -p 8080:80 \
+-v $(pwd)/index.html:/usr/share/nginx/html/index.html:ro \
+nginx:alpine  
 
+Example using Docker Compose:
 
-```bash
-
-sudo docker build -t my-web-app:latest .
-
-sudo docker run -d --name my-web-app-container -p 8080:80 my-web-app:latest
-
-## Check
-
-curl http://127.0.0.1:8080
-
-
-
-\\#STOP/RM
-
-sudo docker rm -f my-web-app-container
-
-
-
-
-
-\\## Run with Docker Compose
-
-
-
-From `A1/test-project`:
-
-
-```bash
-
-sudo docker compose up -d
-
-
-
-\\## Check
-
-curl http://127.0.0.1:8080
-
-
-
-\\#STOP/RM
-
-sudo docker compose down
-
-
-Question: How to deliver index.html without rebuilding the image?
-
-Use a bind mount (volume) and mount the file or site directory into /usr/share/nginx/html/ at runtime, e.g.:
-
-```bash
-
-docker run -d -p 8080:80 \\\\
-
-\&nbsp; -v $(pwd)/index.html:/usr/share/nginx/html/index.html:ro \\\\
-
-\&nbsp; nginx:alpine
-
-
-
-Or with compose:
-
-volumes:
-
-\&nbsp; - ./index.html:/usr/share/nginx/html/index.html:ro
-
-
+volumes:  
+- ./index.html:/usr/share/nginx/html/index.html:ro  
