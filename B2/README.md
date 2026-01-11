@@ -1,94 +1,84 @@
-B2 — Git: Working with uncommitted changes
+# B2 — Git: Working with Uncommitted Changes
 
+## Overview
+This task demonstrates a safe and common Git workflow when:
+- work is in progress and not ready to be committed,
+- it is necessary to switch branches,
+- the last commit message needs to be corrected.
 
+The solution uses standard Git commands and keeps the repository history clean.
 
-This task demonstrates how to safely work with uncommitted changes,
+---
 
-switch branches, and rename the last commit using Git.
+## Scenario
+- Current branch: `feature/junior-task`
+- There are uncommitted local changes.
+- A bug must be fixed in the `main` branch.
+- After returning to `feature/junior-task`, the last commit message must be updated.
 
+---
 
+## Solution Steps
 
-Situation:
+### 1. Save uncommitted changes
+Temporarily store the current working changes.
 
-\- Work is in progress in the feature/junior-task branch.
-
-\- There are uncommitted changes that are not ready to be committed.
-
-\- It is necessary to switch to the main branch to fix a bug.
-
-\- After returning to feature/junior-task, the last commit needs to be renamed.
-
-
-
-Solution:
-
-
-
-1\. Save uncommitted changes
-
-Uncommitted changes are temporarily saved to allow safe branch switching.
-
-
-
+```bash
 git stash
+```
 
+---
 
-
-2\. Switch to the main branch
-
-
-
+### 2. Switch to the main branch
+```bash
 git switch main
+```
 
+---
 
+### 3. Fix the bug in main
+Apply the fix and create a commit.
 
-3\. Fix the bug in main
-
-Apply the required fix and create a commit.
-
-
-
+```bash
 git add .
-
 git commit -m "Fix critical bug"
+```
 
+---
 
-
-4\. Return to the feature branch
-
-
-
+### 4. Return to the feature branch
+```bash
 git switch feature/junior-task
+```
 
+---
 
+### 5. Restore saved changes
+Bring back the previously stashed work.
 
-5\. Restore previously saved changes
-
-
-
+```bash
 git stash pop
+```
 
+---
 
+### 6. Rename the last commit
+Update the message of the most recent commit.
 
-6\. Rename the last commit
-
-Rename the most recent commit in the current branch.
-
-
-
+```bash
 git commit --amend -m "Updated commit message"
+```
 
+---
 
+## Result
+- Uncommitted changes were safely preserved using `git stash`.
+- The bug was fixed in the `main` branch.
+- Work in `feature/junior-task` was restored.
+- The last commit message was successfully updated.
 
-Result:
+---
 
-\- Uncommitted changes were safely preserved using git stash.
-
-\- The bug was fixed in the main branch.
-
-\- Work in feature/junior-task was restored.
-
-\- The last commit was successfully renamed.
-
-
-
+## Notes
+- `git stash` is preferred when changes are not ready for commit.
+- `git commit --amend` should only be used on commits that have not been shared with others.
