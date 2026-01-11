@@ -1,74 +1,46 @@
-\# B1 — clean\_old\_logs.sh
+# B1 — clean_old_logs.sh
 
+Simple Bash script to find and remove old `.log` files with user confirmation.
 
+---
 
-\## Description
+## What it does
 
-clean\_old\_logs.sh is a simple Bash helper script that finds .log files older than a specified
+- Accepts a directory path and number of days
+- Finds `.log` files older than the specified number of days
+- Prints the list of matching files
+- Asks for confirmation before deletion
+- Deletes files only if confirmed
 
-number of days in a given directory and deletes them after user confirmation.
+---
 
+## Usage
 
+./clean_old_logs.sh <log_directory> <days>
 
-The script is intended to demonstrate basic Bash scripting skills:
+---
 
-argument handling, file search with find, interactive input, and safe file removal.
+## Example
 
+./clean_old_logs.sh /var/log 30
 
+---
 
-\## Usage
+## Confirmation flow
 
-./clean\_old\_logs.sh <log\_directory> <days>
+The script will ask:
 
+Delete these files? (y/n):
 
+- `y` — delete listed files
+- `n` — exit without deleting anything
 
-\## Arguments
+---
 
-<log\_directory>  Path to the directory containing log files  
+## Notes
 
-<days>           Delete .log files older than this number of days  
+- File age is determined using modification time (`find -mtime`)
+- Files are never deleted without explicit confirmation
+- Make the script executable before running:
 
-
-
-\## Examples
-
-./clean\_old\_logs.sh /var/log 30  
-
-./clean\_old\_logs.sh /tmp/logs 7  
-
-
-
-\## Behavior
-
-\- Requires exactly two arguments.
-
-\- Searches for files with the .log extension.
-
-\- Selects only files older than the specified number of days.
-
-\- Prints the list of matching files.
-
-\- Prompts for confirmation:  
-
-&nbsp; Delete these files? (y/n):
-
-\- If the user enters y, the files are deleted.
-
-\- If the user enters n, no files are removed.
-
-
-
-\## Notes
-
-\- File age is determined using find with the -mtime option.
-
-\- The script does not delete files without explicit confirmation.
-
-\- Before running on Linux, make the script executable:
-
-
-
-chmod +x clean\_old\_logs.sh
-
-
-
+chmod +x clean_old_logs.sh
