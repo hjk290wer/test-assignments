@@ -46,18 +46,6 @@ Stop the service:
 
 sudo docker compose down  
 
-## Notes (VM environment)
-
-Docker is running inside a virtual machine (VMware NAT).
-
-The service is available from the host machine at:
-
-http://<VM_IP>:8080  
-
-To get the VM IP address:
-
-hostname -I  
-
 ## Question: How to deliver index.html without rebuilding the image?
 
 The index.html file can be delivered using a bind mount (volume) at runtime.
